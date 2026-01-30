@@ -9,7 +9,12 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Configuration } from './collections/Configuration'
+import { Languages } from './collections/Languages'
+import { Homepage } from './collections/Homepage'
+import { AppSettings } from './collections/AppSettings'
+import { ModelConfigurations } from './collections/ModelConfigurations'
+import { LoadingScreens } from './collections/LoadingScreens'
+import { ZoomAnimations } from './collections/ZoomAnimations'
 import { s3Storage } from '@payloadcms/storage-s3'
 
 import './css/admin.scss'
@@ -28,7 +33,16 @@ export default buildConfig({
       css: path.resolve(__dirname, 'css/admin.scss'),
     },
   },
-  collections: [Users, Media, Configuration],
+  collections: [
+    Users,
+    Media,
+    Languages,
+    Homepage,
+    AppSettings,
+    ModelConfigurations,
+    LoadingScreens,
+    // ZoomAnimations,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
