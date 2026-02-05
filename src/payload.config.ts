@@ -18,8 +18,6 @@ import { BrakeConfigurations } from './collections/BrakeConfigurations'
 import { HotspotConfigurations } from './collections/HotspotConfigurations'
 import { s3Storage } from '@payloadcms/storage-s3'
 
-import './css/admin.scss'
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -30,8 +28,8 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    custom: {
-      css: path.resolve(__dirname, 'css/admin.scss'),
+    components: {
+      providers: ['./providers/CustomStylesProvider'],
     },
   },
   collections: [

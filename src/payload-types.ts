@@ -68,7 +68,13 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    configurations: Configuration;
+    languages: Language;
+    homepage: Homepage;
+    'app-settings': AppSetting;
+    'loading-screens': LoadingScreen;
+    'vehicle-configurations': VehicleConfiguration;
+    'brake-configurations': BrakeConfiguration;
+    'hotspot-configurations': HotspotConfiguration;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,7 +83,13 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    configurations: ConfigurationsSelect<false> | ConfigurationsSelect<true>;
+    languages: LanguagesSelect<false> | LanguagesSelect<true>;
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+    'app-settings': AppSettingsSelect<false> | AppSettingsSelect<true>;
+    'loading-screens': LoadingScreensSelect<false> | LoadingScreensSelect<true>;
+    'vehicle-configurations': VehicleConfigurationsSelect<false> | VehicleConfigurationsSelect<true>;
+    'brake-configurations': BrakeConfigurationsSelect<false> | BrakeConfigurationsSelect<true>;
+    'hotspot-configurations': HotspotConfigurationsSelect<false> | HotspotConfigurationsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -137,6 +149,28 @@ export interface User {
  */
 export interface Media {
   id: string;
+  category: 'image' | 'video' | 'pdf' | '3d-model' | 'icon' | 'logo';
+  /**
+   * Alternative text for accessibility and SEO
+   */
+  alt?: string | null;
+  /**
+   * Display title for the media item
+   */
+  title?: string | null;
+  /**
+   * Detailed description of the media content
+   */
+  description?: string | null;
+  /**
+   * Tags for better organization and searching
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
   product: string;
   section: string;
   updatedAt: string;
@@ -152,23 +186,669 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Manage available languages for the application
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "configurations".
+ * via the `definition` "languages".
  */
-export interface Configuration {
+export interface Language {
   id: string;
   /**
-   * Enter the product name
+   * ISO 639-1 language code (e.g., "en", "it", "fr", "de", "es")
    */
-  product: string;
+  code: string;
   /**
-   * Enter the page name
+   * Display name of the language (e.g., "English", "Italian")
    */
-  page: string;
+  name: string;
   /**
-   * Enter the configuration in JSON format
+   * Name of the language in its native script (e.g., "English", "Italiano")
    */
-  config: string;
+  nativeName: string;
+  /**
+   * Set as the default language. Only one language should be default.
+   */
+  isDefault?: boolean | null;
+  /**
+   * Enable or disable this language in the application
+   */
+  isEnabled?: boolean | null;
+  /**
+   * Display order in language selector (lower numbers appear first)
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Homepage content configuration (Singleton)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: string;
+  logo: {
+    /**
+     * Upload the Tenneco logo
+     */
+    media: string | Media;
+    /**
+     * Default alt text (usually English)
+     */
+    alt?: string | null;
+    /**
+     * Translations for the logo alt text
+     */
+    altTranslations?:
+      | {
+          /**
+           * ISO 639-1 language code (e.g., "it", "fr", "de")
+           */
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Display width in pixels
+     */
+    width?: number | null;
+    /**
+     * Display height in pixels
+     */
+    height?: number | null;
+  };
+  hero: {
+    /**
+     * Default title (usually English)
+     */
+    title: string;
+    titleTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Default subtitle (usually English)
+     */
+    subtitle: string;
+    subtitleTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Default description (usually English)
+     */
+    description: string;
+    descriptionTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Title displayed above vehicle category cards
+   */
+  sectionTitle?: string | null;
+  sectionTitleTranslations?:
+    | {
+        language: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional subtitle displayed below section title
+   */
+  sectionSubtitle?: string | null;
+  sectionSubtitleTranslations?:
+    | {
+        language: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Configure vehicle category cards
+   */
+  vehicleCategories?:
+    | {
+        /**
+         * The vehicle type this category represents
+         */
+        vehicleType: 'light' | 'commercial' | 'rail';
+        /**
+         * Order in which this category appears (1, 2, 3, etc.)
+         */
+        order: number;
+        /**
+         * Default title (usually English)
+         */
+        title: string;
+        titleTranslations?:
+          | {
+              language: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Default subtitle (usually English)
+         */
+        subtitle: string;
+        subtitleTranslations?:
+          | {
+              language: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Image for this vehicle category
+         */
+        image: string | Media;
+        gradient: {
+          /**
+           * Tailwind color class (e.g., blue-600)
+           */
+          from: string;
+          /**
+           * Tailwind color class (e.g., cyan-500)
+           */
+          to: string;
+        };
+        /**
+         * Route to navigate to when card is clicked. If not set, auto-generates from vehicleType (e.g., /viewer?type=light)
+         */
+        targetRoute?: string | null;
+        /**
+         * Show/hide this category
+         */
+        isEnabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Global application settings (Singleton)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "app-settings".
+ */
+export interface AppSetting {
+  id: string;
+  branding: {
+    primaryLogo: {
+      media: string | Media;
+      /**
+       * Default alt text (usually English)
+       */
+      alt?: string | null;
+      altTranslations?:
+        | {
+            language: string;
+            value: string;
+            id?: string | null;
+          }[]
+        | null;
+      width?: number | null;
+      height?: number | null;
+    };
+    favicon?: {
+      media?: (string | null) | Media;
+    };
+    colorPalette?: {
+      /**
+       * Hex color code
+       */
+      primary?: string | null;
+      secondary?: string | null;
+      accent?: string | null;
+      background?: string | null;
+      text?: string | null;
+    };
+  };
+  features?: {
+    enableHomepage?: boolean | null;
+    enableAnimations?: boolean | null;
+    enableModelInfo?: boolean | null;
+    enableHotspots?: boolean | null;
+    enableVideoModal?: boolean | null;
+    enablePdfModal?: boolean | null;
+  };
+  defaults?: {
+    defaultModelType?: ('lv' | 'asm' | 'j4444' | 'pad') | null;
+    /**
+     * URL to use when video media is not available
+     */
+    fallbackVideoUrl?: string | null;
+    /**
+     * Path to use when PDF media is not available
+     */
+    fallbackPdfPath?: string | null;
+  };
+  /**
+   * Version and update tracking
+   */
+  environment?: {
+    version?: string | null;
+    lastUpdated?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Loading screen configuration
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "loading-screens".
+ */
+export interface LoadingScreen {
+  id: string;
+  /**
+   * Use SVG path or upload an image
+   */
+  logoType: 'svg' | 'image';
+  /**
+   * SVG path data (only used if Logo Type is SVG)
+   */
+  svgPath?: string | null;
+  /**
+   * Logo image (only used if Logo Type is Image)
+   */
+  logoMedia?: (string | null) | Media;
+  /**
+   * Default title (usually English)
+   */
+  title: string;
+  titleTranslations?:
+    | {
+        language: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Default subtitle (usually English)
+   */
+  subtitle?: string | null;
+  subtitleTranslations?:
+    | {
+        language: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  animation?: {
+    colors?: {
+      /**
+       * Hex color code
+       */
+      primary?: string | null;
+      /**
+       * Hex color code
+       */
+      secondary?: string | null;
+    };
+    /**
+     * Animation duration in milliseconds
+     */
+    duration?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * 3D Vehicle model configurations keyed by vehicle type
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vehicle-configurations".
+ */
+export interface VehicleConfiguration {
+  id: string;
+  /**
+   * Type of vehicle (must be unique - one config per vehicle type)
+   */
+  vehicleType: 'light' | 'commercial' | 'rail';
+  /**
+   * Human-readable name for this vehicle configuration
+   */
+  name: string;
+  modelFile?: {
+    /**
+     * Upload GLB/GLTF 3D model file
+     */
+    media?: (string | null) | Media;
+    /**
+     * Local path to use if media upload not available (e.g., ./models/light_vehicle.glb)
+     */
+    fallbackPath?: string | null;
+  };
+  /**
+   * Scale factor for the model
+   */
+  scale?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Rotation angles for the model
+   */
+  rotation?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Initial position of the model
+   */
+  position?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Position of the tire/wheel for zoom animations
+   */
+  tirePosition?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Initial camera position when viewing this vehicle
+   */
+  cameraStart?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Camera position when zoomed in on brake
+   */
+  cameraZoomTarget?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Configuration for zoom animation behavior
+   */
+  zoomConfig?: {
+    /**
+     * Scale when first loaded
+     */
+    initialScale?: number | null;
+    /**
+     * Point the camera looks at initially
+     */
+    initialLookAtTarget?: {
+      x?: number | null;
+      y?: number | null;
+      z?: number | null;
+    };
+    /**
+     * Point the camera looks at when zoomed
+     */
+    zoomLookAtTarget?: {
+      x?: number | null;
+      y?: number | null;
+      z?: number | null;
+    };
+    /**
+     * Multiplier for zoom effect (higher = more zoom)
+     */
+    zoomIntensity?: number | null;
+  };
+  /**
+   * Enable/disable this vehicle configuration
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * 3D Brake model configurations keyed by vehicle type
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brake-configurations".
+ */
+export interface BrakeConfiguration {
+  id: string;
+  /**
+   * Type of vehicle (must be unique - one brake config per vehicle type)
+   */
+  vehicleType: 'light' | 'commercial' | 'rail';
+  /**
+   * Human-readable name for this brake configuration
+   */
+  name: string;
+  modelFile?: {
+    /**
+     * Upload GLB/GLTF 3D brake model file
+     */
+    media?: (string | null) | Media;
+    /**
+     * Local path to use if media upload not available (e.g., ./models/brake_asm.glb)
+     */
+    fallbackPath?: string | null;
+  };
+  /**
+   * Scale factor for the brake model
+   */
+  scale?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Rotation angles for the brake model
+   */
+  rotation?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Initial position of the brake model
+   */
+  position?: {
+    x?: number | null;
+    y?: number | null;
+    z?: number | null;
+  };
+  /**
+   * Whether to automatically center the model in the viewer
+   */
+  centerModel?: boolean | null;
+  /**
+   * Scale settings for different viewing modes
+   */
+  scaleConfig?: {
+    /**
+     * Scale during transition animations
+     */
+    transitionScale?: number | null;
+    /**
+     * Scale when displayed in the 3D viewer
+     */
+    viewerScale?: number | null;
+  };
+  /**
+   * Hotspot position and label for triggering exploded view
+   */
+  explosionHotspot?: {
+    position?: {
+      x?: number | null;
+      y?: number | null;
+      z?: number | null;
+    };
+    /**
+     * Hex color code for the explosion hotspot
+     */
+    color?: string | null;
+    /**
+     * Default label text (usually English)
+     */
+    label?: string | null;
+    labelTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * PDF documentation and videos for this brake configuration
+   */
+  media?: {
+    /**
+     * Technical documentation PDF
+     */
+    pdf?: (string | null) | Media;
+    /**
+     * Promotional or instructional video
+     */
+    video?: (string | null) | Media;
+    /**
+     * Local path to PDF if upload not available
+     */
+    fallbackPdfPath?: string | null;
+    /**
+     * URL to video if upload not available
+     */
+    fallbackVideoUrl?: string | null;
+  };
+  /**
+   * Enable/disable this brake configuration
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Hotspot configurations keyed by vehicle type
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hotspot-configurations".
+ */
+export interface HotspotConfiguration {
+  id: string;
+  /**
+   * Type of vehicle (must be unique - one hotspot config per vehicle type)
+   */
+  vehicleType: 'light' | 'commercial' | 'rail';
+  /**
+   * Default PDF and video paths used when individual hotspots do not specify their own
+   */
+  defaults?: {
+    /**
+     * Default PDF path for hotspots (e.g., /documents/brake-overview.pdf)
+     */
+    pdf?: string | null;
+    /**
+     * Default video URL for hotspots
+     */
+    video?: string | null;
+  };
+  /**
+   * Interactive hotspots in 3D space for this vehicle type
+   */
+  hotspots?:
+    | {
+        /**
+         * Unique identifier for this hotspot (e.g., brake-caliper, brake-pad)
+         */
+        hotspotId: string;
+        /**
+         * Default label text shown on hover (usually English)
+         */
+        label: string;
+        labelTranslations?:
+          | {
+              language: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Position of the hotspot in 3D space
+         */
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        /**
+         * Hex color code for the hotspot
+         */
+        color?: string | null;
+        /**
+         * Brake component model to navigate to when clicked
+         */
+        targetModel?: ('asm' | 'j4444' | 'pad') | null;
+        /**
+         * Show/hide this hotspot
+         */
+        isEnabled?: boolean | null;
+        /**
+         * Content shown when hotspot is clicked/activated
+         */
+        info?: {
+          /**
+           * Default title for info panel (usually English)
+           */
+          title?: string | null;
+          titleTranslations?:
+            | {
+                language: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * Default description text (usually English)
+           */
+          description?: string | null;
+          descriptionTranslations?:
+            | {
+                language: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * PDF path specific to this hotspot (overrides default)
+           */
+          pdf?: string | null;
+          /**
+           * Upload PDF file (takes precedence over path)
+           */
+          pdfMedia?: (string | null) | Media;
+          /**
+           * Video URL specific to this hotspot (overrides default)
+           */
+          video?: string | null;
+          /**
+           * Upload video file (takes precedence over URL)
+           */
+          videoMedia?: (string | null) | Media;
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -188,8 +868,32 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'configurations';
-        value: string | Configuration;
+        relationTo: 'languages';
+        value: string | Language;
+      } | null)
+    | ({
+        relationTo: 'homepage';
+        value: string | Homepage;
+      } | null)
+    | ({
+        relationTo: 'app-settings';
+        value: string | AppSetting;
+      } | null)
+    | ({
+        relationTo: 'loading-screens';
+        value: string | LoadingScreen;
+      } | null)
+    | ({
+        relationTo: 'vehicle-configurations';
+        value: string | VehicleConfiguration;
+      } | null)
+    | ({
+        relationTo: 'brake-configurations';
+        value: string | BrakeConfiguration;
+      } | null)
+    | ({
+        relationTo: 'hotspot-configurations';
+        value: string | HotspotConfiguration;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -253,6 +957,16 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  category?: T;
+  alt?: T;
+  title?: T;
+  description?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   product?: T;
   section?: T;
   updatedAt?: T;
@@ -269,12 +983,431 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "configurations_select".
+ * via the `definition` "languages_select".
  */
-export interface ConfigurationsSelect<T extends boolean = true> {
-  product?: T;
-  page?: T;
-  config?: T;
+export interface LanguagesSelect<T extends boolean = true> {
+  code?: T;
+  name?: T;
+  nativeName?: T;
+  isDefault?: T;
+  isEnabled?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  logo?:
+    | T
+    | {
+        media?: T;
+        alt?: T;
+        altTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        width?: T;
+        height?: T;
+      };
+  hero?:
+    | T
+    | {
+        title?: T;
+        titleTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        subtitle?: T;
+        subtitleTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        description?: T;
+        descriptionTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  sectionTitle?: T;
+  sectionTitleTranslations?:
+    | T
+    | {
+        language?: T;
+        value?: T;
+        id?: T;
+      };
+  sectionSubtitle?: T;
+  sectionSubtitleTranslations?:
+    | T
+    | {
+        language?: T;
+        value?: T;
+        id?: T;
+      };
+  vehicleCategories?:
+    | T
+    | {
+        vehicleType?: T;
+        order?: T;
+        title?: T;
+        titleTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        subtitle?: T;
+        subtitleTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        image?: T;
+        gradient?:
+          | T
+          | {
+              from?: T;
+              to?: T;
+            };
+        targetRoute?: T;
+        isEnabled?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "app-settings_select".
+ */
+export interface AppSettingsSelect<T extends boolean = true> {
+  branding?:
+    | T
+    | {
+        primaryLogo?:
+          | T
+          | {
+              media?: T;
+              alt?: T;
+              altTranslations?:
+                | T
+                | {
+                    language?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              width?: T;
+              height?: T;
+            };
+        favicon?:
+          | T
+          | {
+              media?: T;
+            };
+        colorPalette?:
+          | T
+          | {
+              primary?: T;
+              secondary?: T;
+              accent?: T;
+              background?: T;
+              text?: T;
+            };
+      };
+  features?:
+    | T
+    | {
+        enableHomepage?: T;
+        enableAnimations?: T;
+        enableModelInfo?: T;
+        enableHotspots?: T;
+        enableVideoModal?: T;
+        enablePdfModal?: T;
+      };
+  defaults?:
+    | T
+    | {
+        defaultModelType?: T;
+        fallbackVideoUrl?: T;
+        fallbackPdfPath?: T;
+      };
+  environment?:
+    | T
+    | {
+        version?: T;
+        lastUpdated?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "loading-screens_select".
+ */
+export interface LoadingScreensSelect<T extends boolean = true> {
+  logoType?: T;
+  svgPath?: T;
+  logoMedia?: T;
+  title?: T;
+  titleTranslations?:
+    | T
+    | {
+        language?: T;
+        value?: T;
+        id?: T;
+      };
+  subtitle?: T;
+  subtitleTranslations?:
+    | T
+    | {
+        language?: T;
+        value?: T;
+        id?: T;
+      };
+  animation?:
+    | T
+    | {
+        colors?:
+          | T
+          | {
+              primary?: T;
+              secondary?: T;
+            };
+        duration?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vehicle-configurations_select".
+ */
+export interface VehicleConfigurationsSelect<T extends boolean = true> {
+  vehicleType?: T;
+  name?: T;
+  modelFile?:
+    | T
+    | {
+        media?: T;
+        fallbackPath?: T;
+      };
+  scale?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  rotation?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  position?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  tirePosition?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  cameraStart?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  cameraZoomTarget?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  zoomConfig?:
+    | T
+    | {
+        initialScale?: T;
+        initialLookAtTarget?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        zoomLookAtTarget?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        zoomIntensity?: T;
+      };
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brake-configurations_select".
+ */
+export interface BrakeConfigurationsSelect<T extends boolean = true> {
+  vehicleType?: T;
+  name?: T;
+  modelFile?:
+    | T
+    | {
+        media?: T;
+        fallbackPath?: T;
+      };
+  scale?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  rotation?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  position?:
+    | T
+    | {
+        x?: T;
+        y?: T;
+        z?: T;
+      };
+  centerModel?: T;
+  scaleConfig?:
+    | T
+    | {
+        transitionScale?: T;
+        viewerScale?: T;
+      };
+  explosionHotspot?:
+    | T
+    | {
+        position?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        color?: T;
+        label?: T;
+        labelTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  media?:
+    | T
+    | {
+        pdf?: T;
+        video?: T;
+        fallbackPdfPath?: T;
+        fallbackVideoUrl?: T;
+      };
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hotspot-configurations_select".
+ */
+export interface HotspotConfigurationsSelect<T extends boolean = true> {
+  vehicleType?: T;
+  defaults?:
+    | T
+    | {
+        pdf?: T;
+        video?: T;
+      };
+  hotspots?:
+    | T
+    | {
+        hotspotId?: T;
+        label?: T;
+        labelTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        position?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        color?: T;
+        targetModel?: T;
+        isEnabled?: T;
+        info?:
+          | T
+          | {
+              title?: T;
+              titleTranslations?:
+                | T
+                | {
+                    language?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              description?: T;
+              descriptionTranslations?:
+                | T
+                | {
+                    language?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              pdf?: T;
+              pdfMedia?: T;
+              video?: T;
+              videoMedia?: T;
+            };
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

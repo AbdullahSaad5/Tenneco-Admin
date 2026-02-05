@@ -19,7 +19,7 @@ export const Languages: CollectionConfig = {
       admin: {
         description: 'ISO 639-1 language code (e.g., "en", "it", "fr", "de", "es")',
       },
-      validate: (value: string) => {
+      validate: (value: string | null | undefined) => {
         if (!value) return 'Language code is required'
         if (!/^[a-z]{2}$/.test(value)) {
           return 'Language code must be 2 lowercase letters (ISO 639-1 format)'
@@ -70,13 +70,14 @@ export const Languages: CollectionConfig = {
   ],
   hooks: {
     beforeValidate: [
-      async ({ data, req, operation }) => {
+      async ({ data, req }) => {
         // If this language is being set as default, unset all others
-        if (data?.isDefault && operation !== 'delete') {
+        if (data?.isDefault) {
           const payload = req.payload
 
           // Find all other default languages
-          const otherDefaults = await payload.find({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const otherDefaults = await (payload as any).find({
             collection: 'languages',
             where: {
               isDefault: { equals: true },
@@ -85,8 +86,10 @@ export const Languages: CollectionConfig = {
           })
 
           // Update them to not be default
-          for (const lang of otherDefaults.docs) {
-            await payload.update({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          for (const lang of otherDefaults.docs as any[]) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await (payload as any).update({
               collection: 'languages',
               id: lang.id,
               data: {
