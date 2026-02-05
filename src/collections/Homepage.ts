@@ -176,6 +176,63 @@ export const Homepage: CollectionConfig = {
       ],
     },
 
+    // Section Text (above vehicle categories)
+    {
+      name: 'sectionTitle',
+      type: 'text',
+      label: 'Section Title (Default)',
+      defaultValue: 'Select the mobility sector you want to explore',
+      admin: {
+        description: 'Title displayed above vehicle category cards',
+      },
+    },
+    {
+      name: 'sectionTitleTranslations',
+      type: 'array',
+      label: 'Section Title Translations',
+      fields: [
+        {
+          name: 'language',
+          type: 'text',
+          label: 'Language Code',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'text',
+          label: 'Translated Section Title',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'sectionSubtitle',
+      type: 'textarea',
+      label: 'Section Subtitle (Default)',
+      admin: {
+        description: 'Optional subtitle displayed below section title',
+      },
+    },
+    {
+      name: 'sectionSubtitleTranslations',
+      type: 'array',
+      label: 'Section Subtitle Translations',
+      fields: [
+        {
+          name: 'language',
+          type: 'text',
+          label: 'Language Code',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'textarea',
+          label: 'Translated Section Subtitle',
+          required: true,
+        },
+      ],
+    },
+
     // Vehicle Categories
     {
       name: 'vehicleCategories',
@@ -187,6 +244,20 @@ export const Homepage: CollectionConfig = {
         description: 'Configure vehicle category cards',
       },
       fields: [
+        {
+          name: 'vehicleType',
+          type: 'select',
+          label: 'Vehicle Type',
+          required: true,
+          options: [
+            { label: 'Light Vehicles', value: 'light' },
+            { label: 'Commercial Vehicles', value: 'commercial' },
+            { label: 'Rail', value: 'rail' },
+          ],
+          admin: {
+            description: 'The vehicle type this category represents',
+          },
+        },
         {
           name: 'order',
           type: 'number',
@@ -293,11 +364,9 @@ export const Homepage: CollectionConfig = {
         {
           name: 'targetRoute',
           type: 'text',
-          label: 'Target Route',
-          required: true,
-          defaultValue: '/viewer?model=lv',
+          label: 'Target Route (Optional Override)',
           admin: {
-            description: 'Route to navigate to when card is clicked',
+            description: 'Route to navigate to when card is clicked. If not set, auto-generates from vehicleType (e.g., /viewer?type=light)',
           },
         },
         {

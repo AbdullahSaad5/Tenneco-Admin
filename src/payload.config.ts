@@ -12,9 +12,10 @@ import { Media } from './collections/Media'
 import { Languages } from './collections/Languages'
 import { Homepage } from './collections/Homepage'
 import { AppSettings } from './collections/AppSettings'
-import { ModelConfigurations } from './collections/ModelConfigurations'
 import { LoadingScreens } from './collections/LoadingScreens'
-import { ZoomAnimations } from './collections/ZoomAnimations'
+import { VehicleConfigurations } from './collections/VehicleConfigurations'
+import { BrakeConfigurations } from './collections/BrakeConfigurations'
+import { HotspotConfigurations } from './collections/HotspotConfigurations'
 import { s3Storage } from '@payloadcms/storage-s3'
 
 import './css/admin.scss'
@@ -39,9 +40,10 @@ export default buildConfig({
     Languages,
     Homepage,
     AppSettings,
-    ModelConfigurations,
     LoadingScreens,
-    // ZoomAnimations,
+    VehicleConfigurations,
+    BrakeConfigurations,
+    HotspotConfigurations,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
