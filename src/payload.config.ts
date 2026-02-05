@@ -56,7 +56,16 @@ export default buildConfig({
     payloadCloudPlugin(),
     s3Storage({
       collections: {
-        media: true,
+        media: {
+          // Generate direct S3 URLs instead of proxied /api/media/file/... URLs
+          generateFileURL: ({ filename }) => {
+            const bucket = process.env.S3_BUCKET || ''
+            const region = process.env.S3_REGION || 'us-east-1'
+            // If you have a CloudFront CDN, use this instead:
+            // return `https://${process.env.CLOUDFRONT_DOMAIN}/${filename}`
+            return `https://${bucket}.s3.${region}.amazonaws.com/${filename}`
+          },
+        },
       },
       bucket: process.env.S3_BUCKET || '',
       config: {
