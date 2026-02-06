@@ -418,14 +418,6 @@ export interface AppSetting {
       text?: string | null;
     };
   };
-  features?: {
-    enableHomepage?: boolean | null;
-    enableAnimations?: boolean | null;
-    enableModelInfo?: boolean | null;
-    enableHotspots?: boolean | null;
-    enableVideoModal?: boolean | null;
-    enablePdfModal?: boolean | null;
-  };
   defaults?: {
     /**
      * URL to use when video media is not available
@@ -1085,16 +1077,6 @@ export interface AppSettingsSelect<T extends boolean = true> {
               background?: T;
               text?: T;
             };
-      };
-  features?:
-    | T
-    | {
-        enableHomepage?: T;
-        enableAnimations?: T;
-        enableModelInfo?: T;
-        enableHotspots?: T;
-        enableVideoModal?: T;
-        enablePdfModal?: T;
       };
   defaults?:
     | T

@@ -125,49 +125,49 @@ export const AppSettings: CollectionConfig = {
     },
 
     // Feature Flags
-    {
-      name: 'features',
-      type: 'group',
-      label: 'Feature Flags',
-      fields: [
-        {
-          name: 'enableHomepage',
-          type: 'checkbox',
-          label: 'Enable Homepage',
-          defaultValue: true,
-        },
-        {
-          name: 'enableAnimations',
-          type: 'checkbox',
-          label: 'Enable Animations',
-          defaultValue: true,
-        },
-        {
-          name: 'enableModelInfo',
-          type: 'checkbox',
-          label: 'Enable Model Info',
-          defaultValue: true,
-        },
-        {
-          name: 'enableHotspots',
-          type: 'checkbox',
-          label: 'Enable Hotspots',
-          defaultValue: true,
-        },
-        {
-          name: 'enableVideoModal',
-          type: 'checkbox',
-          label: 'Enable Video Modal',
-          defaultValue: true,
-        },
-        {
-          name: 'enablePdfModal',
-          type: 'checkbox',
-          label: 'Enable PDF Modal',
-          defaultValue: true,
-        },
-      ],
-    },
+    // {
+    //   name: 'features',
+    //   type: 'group',
+    //   label: 'Feature Flags',
+    //   fields: [
+    //     {
+    //       name: 'enableHomepage',
+    //       type: 'checkbox',
+    //       label: 'Enable Homepage',
+    //       defaultValue: true,
+    //     },
+    //     {
+    //       name: 'enableAnimations',
+    //       type: 'checkbox',
+    //       label: 'Enable Animations',
+    //       defaultValue: true,
+    //     },
+    //     {
+    //       name: 'enableModelInfo',
+    //       type: 'checkbox',
+    //       label: 'Enable Model Info',
+    //       defaultValue: true,
+    //     },
+    //     {
+    //       name: 'enableHotspots',
+    //       type: 'checkbox',
+    //       label: 'Enable Hotspots',
+    //       defaultValue: true,
+    //     },
+    //     {
+    //       name: 'enableVideoModal',
+    //       type: 'checkbox',
+    //       label: 'Enable Video Modal',
+    //       defaultValue: true,
+    //     },
+    //     {
+    //       name: 'enablePdfModal',
+    //       type: 'checkbox',
+    //       label: 'Enable PDF Modal',
+    //       defaultValue: true,
+    //     },
+    //   ],
+    // },
 
     // Default Settings
     {
