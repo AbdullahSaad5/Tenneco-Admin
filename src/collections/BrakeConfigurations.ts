@@ -116,42 +116,6 @@ export const BrakeConfigurations: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'position',
-      type: 'group',
-      label: 'Position (Vector3)',
-      admin: {
-        description: 'Initial position of the brake model',
-      },
-      fields: [
-        {
-          name: 'x',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'y',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'z',
-          type: 'number',
-          defaultValue: 0,
-        },
-      ],
-    },
-
-    // Center Model Setting
-    {
-      name: 'centerModel',
-      type: 'checkbox',
-      label: 'Center Model',
-      defaultValue: true,
-      admin: {
-        description: 'Whether to automatically center the model in the viewer',
-      },
-    },
 
     // Scale Configuration
     {
@@ -254,31 +218,31 @@ export const BrakeConfigurations: CollectionConfig = {
       ],
     },
 
-    // Associated Media
+    // Associated Media (Fallback for Hotspots)
     {
       name: 'media',
       type: 'group',
-      label: 'Associated Media',
+      label: 'Default Media (Fallback)',
       admin: {
-        description: 'PDF documentation and videos for this brake configuration',
+        description: 'PDF and video shown when a hotspot does not have its own media. If empty, the PDF/Video button will be hidden.',
       },
       fields: [
         {
           name: 'pdf',
           type: 'upload',
           relationTo: 'media',
-          label: 'PDF Documentation',
+          label: 'Default PDF Documentation',
           admin: {
-            description: 'Technical documentation PDF',
+            description: 'Fallback PDF shown when hotspot has no PDF. Leave empty to hide PDF button for hotspots without their own PDF.',
           },
         },
         {
           name: 'video',
           type: 'upload',
           relationTo: 'media',
-          label: 'Video',
+          label: 'Default Video',
           admin: {
-            description: 'Promotional or instructional video',
+            description: 'Fallback video shown when hotspot has no video. Leave empty to hide Video button for hotspots without their own video.',
           },
         },
         {
@@ -286,7 +250,7 @@ export const BrakeConfigurations: CollectionConfig = {
           type: 'text',
           label: 'Fallback PDF Path',
           admin: {
-            description: 'Local path to PDF if upload not available',
+            description: 'Local path to PDF if upload not available (e.g., /documents/brake.pdf)',
           },
         },
         {
@@ -294,7 +258,7 @@ export const BrakeConfigurations: CollectionConfig = {
           type: 'text',
           label: 'Fallback Video URL',
           admin: {
-            description: 'URL to video if upload not available',
+            description: 'URL to video if upload not available (e.g., YouTube embed URL)',
           },
         },
       ],

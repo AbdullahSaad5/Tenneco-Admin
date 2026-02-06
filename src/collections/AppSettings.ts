@@ -176,18 +176,6 @@ export const AppSettings: CollectionConfig = {
       label: 'Default Settings',
       fields: [
         {
-          name: 'defaultModelType',
-          type: 'select',
-          label: 'Default Model Type',
-          defaultValue: 'lv',
-          options: [
-            { label: 'LV (Light Vehicle)', value: 'lv' },
-            { label: 'ASM', value: 'asm' },
-            { label: 'J-4444', value: 'j4444' },
-            { label: 'Pad', value: 'pad' },
-          ],
-        },
-        {
           name: 'fallbackVideoUrl',
           type: 'text',
           label: 'Fallback Video URL',

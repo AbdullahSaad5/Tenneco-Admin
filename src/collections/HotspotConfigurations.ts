@@ -28,34 +28,6 @@ export const HotspotConfigurations: CollectionConfig = {
       },
     },
 
-    // Default Resources
-    {
-      name: 'defaults',
-      type: 'group',
-      label: 'Default Resources',
-      admin: {
-        description: 'Default PDF and video paths used when individual hotspots do not specify their own',
-      },
-      fields: [
-        {
-          name: 'pdf',
-          type: 'text',
-          label: 'Default PDF Path',
-          admin: {
-            description: 'Default PDF path for hotspots (e.g., /documents/brake-overview.pdf)',
-          },
-        },
-        {
-          name: 'video',
-          type: 'text',
-          label: 'Default Video URL',
-          admin: {
-            description: 'Default video URL for hotspots',
-          },
-        },
-      ],
-    },
-
     // Hotspots Array
     {
       name: 'hotspots',
@@ -140,19 +112,6 @@ export const HotspotConfigurations: CollectionConfig = {
           },
         },
         {
-          name: 'targetModel',
-          type: 'select',
-          label: 'Target Model (Component)',
-          options: [
-            { label: 'ASM (Assembly)', value: 'asm' },
-            { label: 'J-4444', value: 'j4444' },
-            { label: 'Pad', value: 'pad' },
-          ],
-          admin: {
-            description: 'Brake component model to navigate to when clicked',
-          },
-        },
-        {
           name: 'isEnabled',
           type: 'checkbox',
           label: 'Enabled',
@@ -226,13 +185,13 @@ export const HotspotConfigurations: CollectionConfig = {
               ],
             },
 
-            // PDF Resources
+            // PDF Resources (Optional - falls back to Brake Configuration)
             {
               name: 'pdf',
               type: 'text',
-              label: 'PDF Path (Override)',
+              label: 'PDF Path',
               admin: {
-                description: 'PDF path specific to this hotspot (overrides default)',
+                description: 'PDF path for this hotspot. Leave empty to use the brake configuration PDF, or hide if neither exists.',
               },
             },
             {
@@ -241,17 +200,17 @@ export const HotspotConfigurations: CollectionConfig = {
               relationTo: 'media',
               label: 'PDF Upload',
               admin: {
-                description: 'Upload PDF file (takes precedence over path)',
+                description: 'Upload PDF file (takes precedence over path). Falls back to brake config if empty.',
               },
             },
 
-            // Video Resources
+            // Video Resources (Optional - falls back to Brake Configuration)
             {
               name: 'video',
               type: 'text',
-              label: 'Video URL (Override)',
+              label: 'Video URL',
               admin: {
-                description: 'Video URL specific to this hotspot (overrides default)',
+                description: 'Video URL for this hotspot. Leave empty to use the brake configuration video, or hide if neither exists.',
               },
             },
             {
@@ -260,7 +219,7 @@ export const HotspotConfigurations: CollectionConfig = {
               relationTo: 'media',
               label: 'Video Upload',
               admin: {
-                description: 'Upload video file (takes precedence over URL)',
+                description: 'Upload video file (takes precedence over URL). Falls back to brake config if empty.',
               },
             },
           ],

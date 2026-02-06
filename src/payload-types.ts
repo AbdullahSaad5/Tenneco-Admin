@@ -427,7 +427,6 @@ export interface AppSetting {
     enablePdfModal?: boolean | null;
   };
   defaults?: {
-    defaultModelType?: ('lv' | 'asm' | 'j4444' | 'pad') | null;
     /**
      * URL to use when video media is not available
      */
@@ -551,22 +550,6 @@ export interface VehicleConfiguration {
     z?: number | null;
   };
   /**
-   * Initial position of the model
-   */
-  position?: {
-    x?: number | null;
-    y?: number | null;
-    z?: number | null;
-  };
-  /**
-   * Position of the tire/wheel for zoom animations
-   */
-  tirePosition?: {
-    x?: number | null;
-    y?: number | null;
-    z?: number | null;
-  };
-  /**
    * Initial camera position when viewing this vehicle
    */
   cameraStart?: {
@@ -661,18 +644,6 @@ export interface BrakeConfiguration {
     z?: number | null;
   };
   /**
-   * Initial position of the brake model
-   */
-  position?: {
-    x?: number | null;
-    y?: number | null;
-    z?: number | null;
-  };
-  /**
-   * Whether to automatically center the model in the viewer
-   */
-  centerModel?: boolean | null;
-  /**
    * Scale settings for different viewing modes
    */
   scaleConfig?: {
@@ -711,23 +682,23 @@ export interface BrakeConfiguration {
       | null;
   };
   /**
-   * PDF documentation and videos for this brake configuration
+   * PDF and video shown when a hotspot does not have its own media. If empty, the PDF/Video button will be hidden.
    */
   media?: {
     /**
-     * Technical documentation PDF
+     * Fallback PDF shown when hotspot has no PDF. Leave empty to hide PDF button for hotspots without their own PDF.
      */
     pdf?: (string | null) | Media;
     /**
-     * Promotional or instructional video
+     * Fallback video shown when hotspot has no video. Leave empty to hide Video button for hotspots without their own video.
      */
     video?: (string | null) | Media;
     /**
-     * Local path to PDF if upload not available
+     * Local path to PDF if upload not available (e.g., /documents/brake.pdf)
      */
     fallbackPdfPath?: string | null;
     /**
-     * URL to video if upload not available
+     * URL to video if upload not available (e.g., YouTube embed URL)
      */
     fallbackVideoUrl?: string | null;
   };
@@ -750,19 +721,6 @@ export interface HotspotConfiguration {
    * Type of vehicle (must be unique - one hotspot config per vehicle type)
    */
   vehicleType: 'light' | 'commercial' | 'rail';
-  /**
-   * Default PDF and video paths used when individual hotspots do not specify their own
-   */
-  defaults?: {
-    /**
-     * Default PDF path for hotspots (e.g., /documents/brake-overview.pdf)
-     */
-    pdf?: string | null;
-    /**
-     * Default video URL for hotspots
-     */
-    video?: string | null;
-  };
   /**
    * Interactive hotspots in 3D space for this vehicle type
    */
@@ -796,10 +754,6 @@ export interface HotspotConfiguration {
          */
         color?: string | null;
         /**
-         * Brake component model to navigate to when clicked
-         */
-        targetModel?: ('asm' | 'j4444' | 'pad') | null;
-        /**
          * Show/hide this hotspot
          */
         isEnabled?: boolean | null;
@@ -830,19 +784,19 @@ export interface HotspotConfiguration {
               }[]
             | null;
           /**
-           * PDF path specific to this hotspot (overrides default)
+           * PDF path for this hotspot. Leave empty to use the brake configuration PDF, or hide if neither exists.
            */
           pdf?: string | null;
           /**
-           * Upload PDF file (takes precedence over path)
+           * Upload PDF file (takes precedence over path). Falls back to brake config if empty.
            */
           pdfMedia?: (string | null) | Media;
           /**
-           * Video URL specific to this hotspot (overrides default)
+           * Video URL for this hotspot. Leave empty to use the brake configuration video, or hide if neither exists.
            */
           video?: string | null;
           /**
-           * Upload video file (takes precedence over URL)
+           * Upload video file (takes precedence over URL). Falls back to brake config if empty.
            */
           videoMedia?: (string | null) | Media;
         };
@@ -1145,7 +1099,6 @@ export interface AppSettingsSelect<T extends boolean = true> {
   defaults?:
     | T
     | {
-        defaultModelType?: T;
         fallbackVideoUrl?: T;
         fallbackPdfPath?: T;
       };
@@ -1223,20 +1176,6 @@ export interface VehicleConfigurationsSelect<T extends boolean = true> {
         y?: T;
         z?: T;
       };
-  position?:
-    | T
-    | {
-        x?: T;
-        y?: T;
-        z?: T;
-      };
-  tirePosition?:
-    | T
-    | {
-        x?: T;
-        y?: T;
-        z?: T;
-      };
   cameraStart?:
     | T
     | {
@@ -1302,14 +1241,6 @@ export interface BrakeConfigurationsSelect<T extends boolean = true> {
         y?: T;
         z?: T;
       };
-  position?:
-    | T
-    | {
-        x?: T;
-        y?: T;
-        z?: T;
-      };
-  centerModel?: T;
   scaleConfig?:
     | T
     | {
@@ -1354,12 +1285,6 @@ export interface BrakeConfigurationsSelect<T extends boolean = true> {
  */
 export interface HotspotConfigurationsSelect<T extends boolean = true> {
   vehicleType?: T;
-  defaults?:
-    | T
-    | {
-        pdf?: T;
-        video?: T;
-      };
   hotspots?:
     | T
     | {
@@ -1380,7 +1305,6 @@ export interface HotspotConfigurationsSelect<T extends boolean = true> {
               z?: T;
             };
         color?: T;
-        targetModel?: T;
         isEnabled?: T;
         info?:
           | T

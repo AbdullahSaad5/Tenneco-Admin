@@ -116,58 +116,6 @@ export const VehicleConfigurations: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'position',
-      type: 'group',
-      label: 'Position (Vector3)',
-      admin: {
-        description: 'Initial position of the model',
-      },
-      fields: [
-        {
-          name: 'x',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'y',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'z',
-          type: 'number',
-          defaultValue: 0,
-        },
-      ],
-    },
-
-    // Tire Position (for wheel zoom)
-    {
-      name: 'tirePosition',
-      type: 'group',
-      label: 'Tire Position (Vector3)',
-      admin: {
-        description: 'Position of the tire/wheel for zoom animations',
-      },
-      fields: [
-        {
-          name: 'x',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'y',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'z',
-          type: 'number',
-          defaultValue: 0,
-        },
-      ],
-    },
 
     // Camera Start Position
     {
