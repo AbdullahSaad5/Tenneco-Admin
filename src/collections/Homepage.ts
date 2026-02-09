@@ -246,14 +246,10 @@ export const Homepage: CollectionConfig = {
       fields: [
         {
           name: 'vehicleType',
-          type: 'select',
+          type: 'relationship',
+          relationTo: 'vehicle-types',
           label: 'Vehicle Type',
           required: true,
-          options: [
-            { label: 'Light Vehicles', value: 'light' },
-            { label: 'Commercial Vehicles', value: 'commercial' },
-            { label: 'Rail', value: 'rail' },
-          ],
           admin: {
             description: 'The vehicle type this category represents',
           },

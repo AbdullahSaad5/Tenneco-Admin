@@ -69,6 +69,7 @@ export interface Config {
     users: User;
     media: Media;
     languages: Language;
+    'vehicle-types': VehicleType;
     homepage: Homepage;
     'app-settings': AppSetting;
     'loading-screens': LoadingScreen;
@@ -84,6 +85,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     languages: LanguagesSelect<false> | LanguagesSelect<true>;
+    'vehicle-types': VehicleTypesSelect<false> | VehicleTypesSelect<true>;
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     'app-settings': AppSettingsSelect<false> | AppSettingsSelect<true>;
     'loading-screens': LoadingScreensSelect<false> | LoadingScreensSelect<true>;
@@ -221,6 +223,37 @@ export interface Language {
   createdAt: string;
 }
 /**
+ * Vehicle type definitions - the single source of truth for all vehicle categories
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vehicle-types".
+ */
+export interface VehicleType {
+  id: string;
+  /**
+   * Human-readable name (e.g., "Light Vehicles", "Commercial Vehicles")
+   */
+  name: string;
+  /**
+   * URL-friendly identifier (e.g., "light", "commercial", "rail"). Must be unique.
+   */
+  slug: string;
+  /**
+   * Short description of this vehicle type (e.g., "Passenger cars and light trucks")
+   */
+  description?: string | null;
+  /**
+   * Order in which this type appears in lists and navigation
+   */
+  order?: number | null;
+  /**
+   * Enable/disable this vehicle type
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Homepage content configuration (Singleton)
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -324,7 +357,7 @@ export interface Homepage {
         /**
          * The vehicle type this category represents
          */
-        vehicleType: 'light' | 'commercial' | 'rail';
+        vehicleType: string | VehicleType;
         /**
          * Order in which this category appears (1, 2, 3, etc.)
          */
@@ -510,7 +543,7 @@ export interface VehicleConfiguration {
   /**
    * Type of vehicle (must be unique - one config per vehicle type)
    */
-  vehicleType: 'light' | 'commercial' | 'rail';
+  vehicleType: string | VehicleType;
   /**
    * Human-readable name for this vehicle configuration
    */
@@ -604,7 +637,7 @@ export interface BrakeConfiguration {
   /**
    * Type of vehicle (must be unique - one brake config per vehicle type)
    */
-  vehicleType: 'light' | 'commercial' | 'rail';
+  vehicleType: string | VehicleType;
   /**
    * Human-readable name for this brake configuration
    */
@@ -712,7 +745,7 @@ export interface HotspotConfiguration {
   /**
    * Type of vehicle (must be unique - one hotspot config per vehicle type)
    */
-  vehicleType: 'light' | 'commercial' | 'rail';
+  vehicleType: string | VehicleType;
   /**
    * Interactive hotspots in 3D space for this vehicle type
    */
@@ -816,6 +849,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'languages';
         value: string | Language;
+      } | null)
+    | ({
+        relationTo: 'vehicle-types';
+        value: string | VehicleType;
       } | null)
     | ({
         relationTo: 'homepage';
@@ -938,6 +975,19 @@ export interface LanguagesSelect<T extends boolean = true> {
   isDefault?: T;
   isEnabled?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vehicle-types_select".
+ */
+export interface VehicleTypesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  order?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -14,15 +14,11 @@ export const VehicleConfigurations: CollectionConfig = {
     // Vehicle Type (Primary Key)
     {
       name: 'vehicleType',
-      type: 'select',
+      type: 'relationship',
+      relationTo: 'vehicle-types',
       label: 'Vehicle Type',
       required: true,
       unique: true,
-      options: [
-        { label: 'Light Vehicles', value: 'light' },
-        { label: 'Commercial Vehicles', value: 'commercial' },
-        { label: 'Rail', value: 'rail' },
-      ],
       admin: {
         description: 'Type of vehicle (must be unique - one config per vehicle type)',
       },

@@ -16,6 +16,7 @@ import { LoadingScreens } from './collections/LoadingScreens'
 import { VehicleConfigurations } from './collections/VehicleConfigurations'
 import { BrakeConfigurations } from './collections/BrakeConfigurations'
 import { HotspotConfigurations } from './collections/HotspotConfigurations'
+import { VehicleTypes } from './collections/VehicleTypes'
 import { s3Storage } from '@payloadcms/storage-s3'
 
 const filename = fileURLToPath(import.meta.url)
@@ -36,6 +37,7 @@ export default buildConfig({
     Users,
     Media,
     Languages,
+    VehicleTypes,
     Homepage,
     AppSettings,
     LoadingScreens,
