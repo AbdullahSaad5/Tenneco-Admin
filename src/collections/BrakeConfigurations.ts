@@ -214,6 +214,77 @@ export const BrakeConfigurations: CollectionConfig = {
       ],
     },
 
+    // Collapse Hotspot (for collapsing exploded view)
+    {
+      name: 'collapseHotspot',
+      type: 'group',
+      label: 'Collapse Hotspot',
+      admin: {
+        description: 'Hotspot position and label for collapsing the exploded view back to normal',
+      },
+      fields: [
+        {
+          name: 'position',
+          type: 'group',
+          label: 'Position (Vector3)',
+          fields: [
+            {
+              name: 'x',
+              type: 'number',
+              defaultValue: 0,
+            },
+            {
+              name: 'y',
+              type: 'number',
+              defaultValue: 0.8,
+            },
+            {
+              name: 'z',
+              type: 'number',
+              defaultValue: 0,
+            },
+          ],
+        },
+        {
+          name: 'color',
+          type: 'text',
+          label: 'Color',
+          defaultValue: '#ef4444',
+          admin: {
+            description: 'Hex color code for the collapse hotspot',
+          },
+        },
+        {
+          name: 'label',
+          type: 'text',
+          label: 'Label (Default)',
+          defaultValue: 'Collapse View',
+          admin: {
+            description: 'Default label text (usually English)',
+          },
+        },
+        {
+          name: 'labelTranslations',
+          type: 'array',
+          label: 'Label Translations',
+          fields: [
+            {
+              name: 'language',
+              type: 'text',
+              label: 'Language Code',
+              required: true,
+            },
+            {
+              name: 'value',
+              type: 'text',
+              label: 'Translated Label',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+
     // Associated Media (Fallback for Hotspots)
     {
       name: 'media',

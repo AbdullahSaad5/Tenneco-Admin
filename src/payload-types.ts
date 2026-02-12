@@ -707,6 +707,31 @@ export interface BrakeConfiguration {
       | null;
   };
   /**
+   * Hotspot position and label for collapsing the exploded view back to normal
+   */
+  collapseHotspot?: {
+    position?: {
+      x?: number | null;
+      y?: number | null;
+      z?: number | null;
+    };
+    /**
+     * Hex color code for the collapse hotspot
+     */
+    color?: string | null;
+    /**
+     * Default label text (usually English)
+     */
+    label?: string | null;
+    labelTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
    * PDF and video shown when a hotspot does not have its own media. If empty, the PDF/Video button will be hidden.
    */
   media?: {
@@ -1280,6 +1305,26 @@ export interface BrakeConfigurationsSelect<T extends boolean = true> {
         viewerScale?: T;
       };
   explosionHotspot?:
+    | T
+    | {
+        position?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        color?: T;
+        label?: T;
+        labelTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  collapseHotspot?:
     | T
     | {
         position?:
