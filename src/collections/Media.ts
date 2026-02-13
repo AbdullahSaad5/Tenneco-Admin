@@ -41,6 +41,7 @@ export const Media: CollectionConfig = {
         { label: '3D Model', value: '3d-model' },
         { label: 'Icon', value: 'icon' },
         { label: 'Logo', value: 'logo' },
+        { label: 'Favicon', value: 'favicon' },
       ],
       admin: {
         position: 'sidebar',
@@ -88,17 +89,29 @@ export const Media: CollectionConfig = {
     {
       name: 'product',
       type: 'text',
-      required: true,
+      validate: (value: any, { data }: any) => {
+        if (data?.category !== 'favicon' && !value) {
+          return 'Product is required'
+        }
+        return true
+      },
       admin: {
         position: 'sidebar',
+        condition: (data: any) => data?.category !== 'favicon',
       },
     },
     {
       name: 'section',
       type: 'text',
-      required: true,
+      validate: (value: any, { data }: any) => {
+        if (data?.category !== 'favicon' && !value) {
+          return 'Section is required'
+        }
+        return true
+      },
       admin: {
         position: 'sidebar',
+        condition: (data: any) => data?.category !== 'favicon',
       },
     },
   ],

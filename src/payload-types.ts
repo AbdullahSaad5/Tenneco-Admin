@@ -151,7 +151,7 @@ export interface User {
  */
 export interface Media {
   id: string;
-  category: 'image' | 'video' | 'pdf' | '3d-model' | 'icon' | 'logo';
+  category: 'image' | 'video' | 'pdf' | '3d-model' | 'icon' | 'logo' | 'favicon';
   /**
    * Alternative text for accessibility and SEO
    */
@@ -173,8 +173,8 @@ export interface Media {
         id?: string | null;
       }[]
     | null;
-  product: string;
-  section: string;
+  product?: string | null;
+  section?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
