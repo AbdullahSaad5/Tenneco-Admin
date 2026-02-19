@@ -9,6 +9,7 @@
  * Usage:
  *   npx tsx src/migrations/seed-vehicle-types.ts
  *
+ * @author SAS
  * Prerequisites:
  *   - The Payload admin server must be running (default: http://localhost:3001)
  *   - Set PAYLOAD_API_URL environment variable if different from default

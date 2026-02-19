@@ -1,5 +1,6 @@
 # To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+LABEL maintainer="sas"
 
 FROM node:22.12.0-alpine AS base
 
