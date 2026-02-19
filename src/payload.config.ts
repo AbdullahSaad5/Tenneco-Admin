@@ -120,6 +120,7 @@ export default buildConfig({
     'https://tenneco.vercel.app',
     'https://tenneco-s2i89.ondigitalocean.app',
     'https://stingray-app-c4ljo.ondigitalocean.app',
-    "https://tenneco-69z8.vercel.app"
+    "https://tenneco-69z8.vercel.app",
+    "https://tenneco-admin.vrtualizeweb.eu"
   ],
 })
