@@ -753,6 +753,33 @@ export interface BrakeConfiguration {
     fallbackVideoUrl?: string | null;
   };
   /**
+   * Optional info panel shown when the brake model is in its collapsed (default) state. Leave blank to hide.
+   */
+  overallInfo?: {
+    /**
+     * Default title text (usually English)
+     */
+    title?: string | null;
+    titleTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Supports Markdown. Default description text (usually English)
+     */
+    description?: string | null;
+    descriptionTranslations?:
+      | {
+          language: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
    * Enable/disable this brake configuration
    */
   isActive?: boolean | null;
@@ -1351,6 +1378,26 @@ export interface BrakeConfigurationsSelect<T extends boolean = true> {
         video?: T;
         fallbackPdfPath?: T;
         fallbackVideoUrl?: T;
+      };
+  overallInfo?:
+    | T
+    | {
+        title?: T;
+        titleTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        description?: T;
+        descriptionTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
       };
   isActive?: T;
   updatedAt?: T;
