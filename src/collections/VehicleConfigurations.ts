@@ -247,6 +247,17 @@ export const VehicleConfigurations: CollectionConfig = {
       ],
     },
 
+    // Animation Settings
+    {
+      name: 'animationStartDelay',
+      type: 'number',
+      label: 'Animation Start Delay (seconds)',
+      defaultValue: 0,
+      admin: {
+        description: 'Seconds to wait (camera held at start position) before the animation begins. Applies whether showcase is enabled or not.',
+      },
+    },
+
     // Showcase Animation
     {
       name: 'showcaseEnabled',
