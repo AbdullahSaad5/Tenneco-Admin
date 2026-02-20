@@ -247,6 +247,66 @@ export const VehicleConfigurations: CollectionConfig = {
       ],
     },
 
+    // Showcase Animation
+    {
+      name: 'showcaseEnabled',
+      type: 'checkbox',
+      label: 'Enable Showcase Animation',
+      defaultValue: true,
+      admin: {
+        description: 'When enabled, the camera orbits around the vehicle before the main animation',
+      },
+    },
+    {
+      name: 'showcaseWaypoints',
+      type: 'array',
+      label: 'Showcase Camera Waypoints',
+      admin: {
+        description: 'Camera positions the showcase orbit moves through (in order). Each has a 3D position, travel duration, and optional linger time.',
+        condition: (data) => data.showcaseEnabled !== false,
+      },
+      fields: [
+        {
+          name: 'position',
+          type: 'group',
+          label: 'Camera Position (Vector3)',
+          fields: [
+            { name: 'x', type: 'number', defaultValue: 0 },
+            { name: 'y', type: 'number', defaultValue: 3 },
+            { name: 'z', type: 'number', defaultValue: 10 },
+          ],
+        },
+        {
+          name: 'duration',
+          type: 'number',
+          label: 'Travel Duration (seconds)',
+          defaultValue: 2,
+          admin: {
+            description: 'Seconds to travel from previous position to this one',
+          },
+        },
+        {
+          name: 'pause',
+          type: 'number',
+          label: 'Linger Duration (seconds)',
+          defaultValue: 0,
+          admin: {
+            description: 'Extra time to slow down near this position (0 = no lingering)',
+          },
+        },
+      ],
+    },
+    {
+      name: 'showcaseReturnDuration',
+      type: 'number',
+      label: 'Showcase Return Duration (seconds)',
+      defaultValue: 2,
+      admin: {
+        description: 'Seconds for the camera to return to the start position after the last waypoint',
+        condition: (data) => data.showcaseEnabled !== false,
+      },
+    },
+
     // Metadata
     {
       name: 'isActive',
