@@ -331,6 +331,72 @@ export const BrakeConfigurations: CollectionConfig = {
       ],
     },
 
+    // Overall Brake Info (shown in collapsed state)
+    {
+      name: 'overallInfo',
+      type: 'group',
+      label: 'Overall Brake Info',
+      admin: {
+        description: 'Optional info panel shown when the brake model is in its collapsed (default) state. Leave blank to hide.',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Title (Default)',
+          admin: {
+            description: 'Default title text (usually English)',
+          },
+        },
+        {
+          name: 'titleTranslations',
+          type: 'array',
+          label: 'Title Translations',
+          fields: [
+            {
+              name: 'language',
+              type: 'text',
+              label: 'Language Code',
+              required: true,
+            },
+            {
+              name: 'value',
+              type: 'text',
+              label: 'Translated Title',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description (Default)',
+          admin: {
+            description: 'Supports Markdown. Default description text (usually English)',
+          },
+        },
+        {
+          name: 'descriptionTranslations',
+          type: 'array',
+          label: 'Description Translations',
+          fields: [
+            {
+              name: 'language',
+              type: 'text',
+              label: 'Language Code',
+              required: true,
+            },
+            {
+              name: 'value',
+              type: 'textarea',
+              label: 'Translated Description',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+
     // Metadata
     {
       name: 'isActive',
