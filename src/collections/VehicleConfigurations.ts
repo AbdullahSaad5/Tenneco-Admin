@@ -257,6 +257,15 @@ export const VehicleConfigurations: CollectionConfig = {
         description: 'Seconds to wait (camera held at start position) before the animation begins. Applies whether showcase is enabled or not.',
       },
     },
+    {
+      name: 'zoomDuration',
+      type: 'number',
+      label: 'Zoom Duration (seconds)',
+      defaultValue: 2,
+      admin: {
+        description: 'How many seconds the camera takes to zoom in towards the brake after the vehicle turns blue.',
+      },
+    },
 
     // Showcase Animation
     {
