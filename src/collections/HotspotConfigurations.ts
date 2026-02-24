@@ -116,6 +116,19 @@ export const HotspotConfigurations: CollectionConfig = {
             description: 'Show/hide this hotspot',
           },
         },
+        {
+          name: 'infoSide',
+          type: 'select',
+          label: 'Info Panel Side',
+          defaultValue: 'right',
+          options: [
+            { label: 'Right', value: 'right' },
+            { label: 'Left', value: 'left' },
+          ],
+          admin: {
+            description: 'Which side of the screen the info panel appears on when this hotspot is clicked',
+          },
+        },
 
         // Hotspot Info Content
         {
@@ -313,6 +326,19 @@ export const HotspotConfigurations: CollectionConfig = {
           defaultValue: true,
           admin: {
             description: 'Show/hide this hotspot',
+          },
+        },
+        {
+          name: 'infoSide',
+          type: 'select',
+          label: 'Info Panel Side',
+          defaultValue: 'right',
+          options: [
+            { label: 'Right', value: 'right' },
+            { label: 'Left', value: 'left' },
+          ],
+          admin: {
+            description: 'Which side of the screen the info panel appears on when this hotspot is clicked',
           },
         },
 

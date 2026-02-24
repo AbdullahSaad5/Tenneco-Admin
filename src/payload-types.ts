@@ -872,6 +872,10 @@ export interface HotspotConfiguration {
          */
         isEnabled?: boolean | null;
         /**
+         * Which side of the screen the info panel appears on when this hotspot is clicked
+         */
+        infoSide?: ('right' | 'left') | null;
+        /**
          * Content shown when hotspot is clicked/activated
          */
         info?: {
@@ -953,6 +957,10 @@ export interface HotspotConfiguration {
          * Show/hide this hotspot
          */
         isEnabled?: boolean | null;
+        /**
+         * Which side of the screen the info panel appears on when this hotspot is clicked
+         */
+        infoSide?: ('right' | 'left') | null;
         /**
          * Content shown when hotspot is clicked/activated
          */
@@ -1567,6 +1575,7 @@ export interface HotspotConfigurationsSelect<T extends boolean = true> {
             };
         color?: T;
         isEnabled?: T;
+        infoSide?: T;
         info?:
           | T
           | {
@@ -1614,6 +1623,7 @@ export interface HotspotConfigurationsSelect<T extends boolean = true> {
             };
         color?: T;
         isEnabled?: T;
+        infoSide?: T;
         info?:
           | T
           | {
