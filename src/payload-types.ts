@@ -817,6 +817,14 @@ export interface BrakeConfiguration {
       | null;
   };
   /**
+   * Hex color the grid lines animate to when the brake model is shown (e.g. #93c5fd). Leave empty to keep the default grid line color.
+   */
+  gridColor?: string | null;
+  /**
+   * Hex color the scene background animates to when the brake model is shown (e.g. #eff6ff). Leave empty to keep the default background color.
+   */
+  sceneBackgroundColor?: string | null;
+  /**
    * Enable/disable this brake configuration
    */
   isActive?: boolean | null;
@@ -1544,6 +1552,8 @@ export interface BrakeConfigurationsSelect<T extends boolean = true> {
               id?: T;
             };
       };
+  gridColor?: T;
+  sceneBackgroundColor?: T;
   isActive?: T;
   updatedAt?: T;
   createdAt?: T;

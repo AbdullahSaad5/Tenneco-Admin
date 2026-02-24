@@ -397,6 +397,24 @@ export const BrakeConfigurations: CollectionConfig = {
       ],
     },
 
+    // Scene Colors (when brake model is shown)
+    {
+      name: 'gridColor',
+      type: 'text',
+      label: 'Grid Lines Color',
+      admin: {
+        description: 'Hex color the grid lines animate to when the brake model is shown (e.g. #93c5fd). Leave empty to keep the default grid line color.',
+      },
+    },
+    {
+      name: 'sceneBackgroundColor',
+      type: 'text',
+      label: 'Scene Background Color',
+      admin: {
+        description: 'Hex color the scene background animates to when the brake model is shown (e.g. #eff6ff). Leave empty to keep the default background color.',
+      },
+    },
+
     // Metadata
     {
       name: 'isActive',
