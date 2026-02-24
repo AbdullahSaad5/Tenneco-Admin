@@ -1,4 +1,30 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, FieldHook } from 'payload'
+import { lexicalEditor, UploadFeature } from '@payloadcms/richtext-lexical'
+
+const migrateStringToRichText: FieldHook = ({ value }) => {
+  if (typeof value === 'string' && value.trim()) {
+    return {
+      root: {
+        children: [
+          {
+            children: [{ detail: 0, format: 0, mode: 'normal', style: '', text: value, type: 'text', version: 1 }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            type: 'paragraph',
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        type: 'root',
+        version: 1,
+      },
+    }
+  }
+  return value
+}
 
 export const BrakeConfigurations: CollectionConfig = {
   slug: 'brake-configurations',
@@ -369,11 +395,15 @@ export const BrakeConfigurations: CollectionConfig = {
         },
         {
           name: 'description',
-          type: 'textarea',
+          type: 'richText',
           label: 'Description (Default)',
-          admin: {
-            description: 'Supports Markdown. Default description text (usually English)',
-          },
+          hooks: { afterRead: [migrateStringToRichText] },
+          editor: lexicalEditor({
+            features: ({ defaultFeatures }) => [
+              ...defaultFeatures,
+              UploadFeature({ collections: { media: { fields: [] } } }),
+            ],
+          }),
         },
         {
           name: 'descriptionTranslations',
@@ -388,9 +418,16 @@ export const BrakeConfigurations: CollectionConfig = {
             },
             {
               name: 'value',
-              type: 'textarea',
+              type: 'richText',
               label: 'Translated Description',
               required: true,
+              hooks: { afterRead: [migrateStringToRichText] },
+              editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures,
+                  UploadFeature({ collections: { media: { fields: [] } } }),
+                ],
+              }),
             },
           ],
         },

@@ -1,4 +1,32 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, FieldHook } from 'payload'
+import { lexicalEditor, UploadFeature } from '@payloadcms/richtext-lexical'
+
+// Converts legacy plain-string descriptions (from old textarea fields) to a valid
+// Lexical SerializedEditorState so the rich text editor can open existing records.
+const migrateStringToRichText: FieldHook = ({ value }) => {
+  if (typeof value === 'string' && value.trim()) {
+    return {
+      root: {
+        children: [
+          {
+            children: [{ detail: 0, format: 0, mode: 'normal', style: '', text: value, type: 'text', version: 1 }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            type: 'paragraph',
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        type: 'root',
+        version: 1,
+      },
+    }
+  }
+  return value
+}
 
 export const HotspotConfigurations: CollectionConfig = {
   slug: 'hotspot-configurations',
@@ -168,11 +196,15 @@ export const HotspotConfigurations: CollectionConfig = {
             },
             {
               name: 'description',
-              type: 'textarea',
+              type: 'richText',
               label: 'Description (Default)',
-              admin: {
-                description: 'Default description text (usually English)',
-              },
+              hooks: { afterRead: [migrateStringToRichText] },
+              editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures,
+                  UploadFeature({ collections: { media: { fields: [] } } }),
+                ],
+              }),
             },
             {
               name: 'descriptionTranslations',
@@ -187,9 +219,16 @@ export const HotspotConfigurations: CollectionConfig = {
                 },
                 {
                   name: 'value',
-                  type: 'textarea',
+                  type: 'richText',
                   label: 'Translated Description',
                   required: true,
+                  hooks: { afterRead: [migrateStringToRichText] },
+                  editor: lexicalEditor({
+                    features: ({ defaultFeatures }) => [
+                      ...defaultFeatures,
+                      UploadFeature({ collections: { media: { fields: [] } } }),
+                    ],
+                  }),
                 },
               ],
             },
@@ -380,11 +419,15 @@ export const HotspotConfigurations: CollectionConfig = {
             },
             {
               name: 'description',
-              type: 'textarea',
+              type: 'richText',
               label: 'Description (Default)',
-              admin: {
-                description: 'Default description text (usually English)',
-              },
+              hooks: { afterRead: [migrateStringToRichText] },
+              editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                  ...defaultFeatures,
+                  UploadFeature({ collections: { media: { fields: [] } } }),
+                ],
+              }),
             },
             {
               name: 'descriptionTranslations',
@@ -399,9 +442,16 @@ export const HotspotConfigurations: CollectionConfig = {
                 },
                 {
                   name: 'value',
-                  type: 'textarea',
+                  type: 'richText',
                   label: 'Translated Description',
                   required: true,
+                  hooks: { afterRead: [migrateStringToRichText] },
+                  editor: lexicalEditor({
+                    features: ({ defaultFeatures }) => [
+                      ...defaultFeatures,
+                      UploadFeature({ collections: { media: { fields: [] } } }),
+                    ],
+                  }),
                 },
               ],
             },
