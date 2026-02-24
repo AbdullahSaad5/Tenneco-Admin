@@ -620,6 +620,43 @@ export interface VehicleConfiguration {
     zoomIntensity?: number | null;
   };
   /**
+   * Seconds to wait (camera held at start position) before the animation begins. Applies whether showcase is enabled or not.
+   */
+  animationStartDelay?: number | null;
+  /**
+   * How many seconds the camera takes to zoom in towards the brake after the vehicle turns blue.
+   */
+  zoomDuration?: number | null;
+  /**
+   * When enabled, the camera orbits around the vehicle before the main animation
+   */
+  showcaseEnabled?: boolean | null;
+  /**
+   * Camera positions the showcase orbit moves through (in order). Each has a 3D position, travel duration, and optional linger time.
+   */
+  showcaseWaypoints?:
+    | {
+        position?: {
+          x?: number | null;
+          y?: number | null;
+          z?: number | null;
+        };
+        /**
+         * Seconds to travel from previous position to this one
+         */
+        duration?: number | null;
+        /**
+         * Extra time to slow down near this position (0 = no lingering)
+         */
+        pause?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Seconds for the camera to return to the start position after the last waypoint
+   */
+  showcaseReturnDuration?: number | null;
+  /**
    * Enable/disable this vehicle configuration
    */
   isActive?: boolean | null;
@@ -799,9 +836,91 @@ export interface HotspotConfiguration {
    */
   vehicleType: string | VehicleType;
   /**
-   * Interactive hotspots in 3D space for this vehicle type
+   * Interactive hotspots shown in 3D space when the brake model is in its exploded/expanded state. Clicking these highlights the related part.
    */
   hotspots?:
+    | {
+        /**
+         * Unique identifier for this hotspot (e.g., brake-caliper, brake-pad)
+         */
+        hotspotId: string;
+        /**
+         * Default label text shown on hover (usually English)
+         */
+        label: string;
+        labelTranslations?:
+          | {
+              language: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Position of the hotspot in 3D space
+         */
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        /**
+         * Hex color code for the hotspot
+         */
+        color?: string | null;
+        /**
+         * Show/hide this hotspot
+         */
+        isEnabled?: boolean | null;
+        /**
+         * Content shown when hotspot is clicked/activated
+         */
+        info?: {
+          /**
+           * Default title for info panel (usually English)
+           */
+          title?: string | null;
+          titleTranslations?:
+            | {
+                language: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * Default description text (usually English)
+           */
+          description?: string | null;
+          descriptionTranslations?:
+            | {
+                language: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * PDF path for this hotspot. Leave empty to use the brake configuration PDF, or hide if neither exists.
+           */
+          pdf?: string | null;
+          /**
+           * Upload PDF file (takes precedence over path). Falls back to brake config if empty.
+           */
+          pdfMedia?: (string | null) | Media;
+          /**
+           * Video URL for this hotspot. Leave empty to use the brake configuration video, or hide if neither exists.
+           */
+          video?: string | null;
+          /**
+           * Upload video file (takes precedence over URL). Falls back to brake config if empty.
+           */
+          videoMedia?: (string | null) | Media;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Interactive hotspots shown on the closed brake model. Clicking these only opens the info panel — no part highlighting or opacity changes.
+   */
+  collapsedHotspots?:
     | {
         /**
          * Unique identifier for this hotspot (e.g., brake-caliper, brake-pad)
@@ -1294,6 +1413,24 @@ export interface VehicleConfigurationsSelect<T extends boolean = true> {
             };
         zoomIntensity?: T;
       };
+  animationStartDelay?: T;
+  zoomDuration?: T;
+  showcaseEnabled?: T;
+  showcaseWaypoints?:
+    | T
+    | {
+        position?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        duration?: T;
+        pause?: T;
+        id?: T;
+      };
+  showcaseReturnDuration?: T;
   isActive?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1410,6 +1547,53 @@ export interface BrakeConfigurationsSelect<T extends boolean = true> {
 export interface HotspotConfigurationsSelect<T extends boolean = true> {
   vehicleType?: T;
   hotspots?:
+    | T
+    | {
+        hotspotId?: T;
+        label?: T;
+        labelTranslations?:
+          | T
+          | {
+              language?: T;
+              value?: T;
+              id?: T;
+            };
+        position?:
+          | T
+          | {
+              x?: T;
+              y?: T;
+              z?: T;
+            };
+        color?: T;
+        isEnabled?: T;
+        info?:
+          | T
+          | {
+              title?: T;
+              titleTranslations?:
+                | T
+                | {
+                    language?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              description?: T;
+              descriptionTranslations?:
+                | T
+                | {
+                    language?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              pdf?: T;
+              pdfMedia?: T;
+              video?: T;
+              videoMedia?: T;
+            };
+        id?: T;
+      };
+  collapsedHotspots?:
     | T
     | {
         hotspotId?: T;
